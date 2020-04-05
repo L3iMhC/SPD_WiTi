@@ -12,28 +12,29 @@
 
 using namespace std;
 
-struct rpqcontainer {
+struct WiTicontainer {
     int p;
     int w;
     int d;
 
 
-    rpqcontainer& operator = (const rpqcontainer& rpqcopy) {
+    WiTicontainer& operator = (const WiTicontainer& rpqcopy) {
         p = rpqcopy.p;
         w = rpqcopy.w;
         d = rpqcopy.d;
         return *this;
     }
 
-    rpqcontainer(int x, int y, int z) { p = x; w = y; d = z; }
-    rpqcontainer() { p = 0; w = 0; d = 0; }
+    WiTicontainer(int x, int y, int z) { p = x; w = y; d = z; }
+    WiTicontainer() { p = 0; w = 0; d = 0; }
 };
 
 struct CompareD {
-    bool operator()(rpqcontainer const& d1, rpqcontainer const& d2)
+    bool operator()(WiTicontainer const& d1, WiTicontainer const& d2)
     {
         return d1.d < d2.d;
     }
 };
 
-tuple<int, int, vector <rpqcontainer>> getDataFromFile(const string fileName);
+tuple<int, int, vector <WiTicontainer>> getDataFromFile(const string fileName);
+void showVector(vector <WiTicontainer> data);
