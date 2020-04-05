@@ -20,3 +20,22 @@ int CountCryterium(int n, vector <WiTicontainer> data)
 	delete[] S, T;
 	return F;
 }
+
+vector<WiTicontainer> SortD(int n, vector <WiTicontainer> data)
+{
+	vector<WiTicontainer> kopia = data;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i+1; j < n; j++)
+		{
+			if (kopia[i].d > kopia[j].d)
+			{
+				WiTicontainer kopia2 = kopia[i];
+				kopia[i] = kopia[j];
+				kopia[j] = kopia2;
+			}
+		}
+	}
+	return kopia;
+}
