@@ -1,5 +1,3 @@
 #pragma once
-class Algortimhs
-{
-};
+#include "utility.h"
 
