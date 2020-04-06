@@ -5,9 +5,10 @@ int main()
 {
 	int cryterium;
 	vector <WiTicontainer> data, oblicz;
+	Brute Brute1;
 	int n;
 	int parameters;
-	tie(n, parameters, data) = getDataFromFile("data14.txt");
+	tie(n, parameters, data) = getDataFromFile("data11.txt");
 
 	showVector(data);
 
@@ -20,6 +21,9 @@ int main()
 
 	cout << "Wartosc F dla sortD=  " << cryterium << endl;
 
+	Brute1 = BruteForce(n, data);
+
+	cout << "Wartosc F dla BruteForce= " << Brute1.result << endl;
 
 	return 0;
 }

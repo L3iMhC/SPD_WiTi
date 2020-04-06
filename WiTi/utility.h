@@ -17,16 +17,32 @@ struct WiTicontainer {
     int w;
     int d;
 
+    int indeks;
 
-    WiTicontainer& operator = (const WiTicontainer& rpqcopy) {
-        p = rpqcopy.p;
-        w = rpqcopy.w;
-        d = rpqcopy.d;
+
+    WiTicontainer& operator = (const WiTicontainer& witicopy) {
+        p = witicopy.p;
+        w = witicopy.w;
+        d = witicopy.d;
+        indeks = witicopy.indeks;
         return *this;
     }
 
-    WiTicontainer(int x, int y, int z) { p = x; w = y; d = z; }
-    WiTicontainer() { p = 0; w = 0; d = 0; }
+    WiTicontainer(int x, int y, int z, int h) { p = x; w = y; d = z; indeks = h; }
+    WiTicontainer() { p = 0; w = 0; d = 0; indeks = 0; }
+
+  //  bool operator<(const WiTicontainer& rhs) const {
+  //      return (this->indeks) < (rhs.indeks);
+  //  }
+};
+
+
+struct Brute
+{
+   vector<WiTicontainer> opt;
+    int result;
+
+    Brute() { opt; result = 0; }
 };
 
 struct CompareD {
@@ -37,4 +53,5 @@ struct CompareD {
 };
 
 tuple<int, int, vector <WiTicontainer>> getDataFromFile(const string fileName);
+
 void showVector(vector <WiTicontainer> data);

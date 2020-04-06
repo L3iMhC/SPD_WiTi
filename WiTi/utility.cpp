@@ -13,6 +13,7 @@ tuple<int, int, vector <WiTicontainer> > getDataFromFile(const string fileName) 
 		file >> tmp.p;
 		file >> tmp.w;
 		file >> tmp.d;
+		tmp.indeks = i;
 
 		data.push_back(tmp);
 	}

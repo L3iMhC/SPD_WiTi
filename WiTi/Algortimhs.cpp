@@ -39,3 +39,29 @@ vector<WiTicontainer> SortD(int n, vector <WiTicontainer> data)
 	}
 	return kopia;
 }
+
+Brute BruteForce(int n, vector <WiTicontainer> data)
+{
+	Brute outcome;
+	vector <WiTicontainer> kopia, wynik;
+	kopia = data;
+	int F = 0;
+	int wynik1=1000000;
+
+	do 
+	{
+		F = CountCryterium(n, kopia);
+		if (F < wynik1)
+		{
+			wynik1 = F;
+			wynik = kopia;
+		}
+	} while (std::next_permutation(kopia.begin(), kopia.end(),
+		[](const auto& lhs, const auto& rhs)
+		{ return lhs.indeks < rhs.indeks; }));
+
+	outcome.opt = wynik;
+	outcome.result = wynik1;
+
+	return outcome;
+}
