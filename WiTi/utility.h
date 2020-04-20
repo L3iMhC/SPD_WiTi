@@ -9,8 +9,13 @@
 #include <tuple>
 #include <queue>
 #include <ctime> 
+#include <bitset>
+#include <new>
 
 using namespace std;
+
+static int ALLMASK;
+
 
 struct WiTicontainer {
     int p;
@@ -37,13 +42,7 @@ struct WiTicontainer {
 };
 
 
-struct Brute
-{
-   vector<WiTicontainer> opt;
-    int result;
 
-    Brute() { opt; result = 0; }
-};
 
 struct CompareD {
     bool operator()(WiTicontainer const& d1, WiTicontainer const& d2)
