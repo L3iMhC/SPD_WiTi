@@ -1,53 +1,59 @@
 #include "Algortimhs.h"
 #include "utility.h"
 
+
+auto timeMeasure2(int n, vector <WiTicontainer> data, Brute(*function)(int, vector <WiTicontainer>))
+{
+	auto start = std::chrono::high_resolution_clock::now();
+	function(n, data);
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+	//cout << "Czas wykonywania sie algorytmu:" << duration.count() << endl;
+	return duration;
+}
+
 int main()
 {
 	int cryterium;
-	vector <WiTicontainer> data, oblicz;
+	vector <WiTicontainer> data;
 	Brute Brute1;
 	int n;
 	int parameters;
-	tie(n, parameters, data) = getDataFromFile("data10.txt");
+	tie(n, parameters, data) = getDataFromFile("data20.txt");
 
-	int x = 2 ^ n - 1;
-	//int** dp = new int* [x];
-	//for (int i = 0; i < (x); ++i)
-	//	dp[i] = new int[n];
-	//memset(dp, -1, sizeof dp);// set all subsets to -1
-	//for (int g = 0; g < (2 ^ n - 1); ++g)
-	//	for (int z = 0; z < n; ++z)
-	//		dp[g][z] = -1;
-	/*vector<vector<int> > dp(n, vector<int>(x));
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < x; j++) {
-			dp[i][j] = -1;
-		}
-	}
-	*/
 	showVector(data);
-
 	cryterium = CountCryterium(n, data);
-	
-	cout << "Wartosc F dla naturalnego=  " << cryterium << endl;
 
-	oblicz = SortD(n, data);
-	cryterium = CountCryterium(n, oblicz);
+	//Brute1 = SortD(n, data);
+	for (int i = 0; i < 10; i++) {
+		auto timeSortD = timeMeasure2(n, data, SortD);
+		cout << "TIME SortD: " << timeSortD.count() << endl;
 
-	cout << "Wartosc F dla sortD=  " << cryterium << endl;
+		//cout << "Wartosc F dla naturalnego=  " << cryterium << endl;
 
-	//Brute1 = BruteForce(n, data);
+		//cout << "Wartosc F dla sortD=  " << cryterium << endl;
 
-	//cout << "Wartosc F dla BruteForce= " << Brute1.result << endl;
 
-	Brute1.result = Dynamic(n, data);
+		//Brute1 = BruteForce(n, data);
+		//auto timeBrute1 = timeMeasure2(n, data, BruteForce);
+		//cout << "TIME BruteForce1: " << timeBrute1.count() << endl;
 
-	cout << "Wartosc F dla dynamic= " << Brute1.result << endl;
+		//cout << "Wartosc F dla BruteForce= " << Brute1.result << endl;
 
-	//for (int j = 0; j < (2 ^ n - 1); ++j)
-	//	delete[] dp[j];
-	//delete[] dp;
+
+		//Brute1 = BruteForce_recursive(n, data);
+		//auto timeBrute2 = timeMeasure2(n, data, BruteForce_recursive);
+		//cout << "TIME BruteForce2: " << timeBrute2.count() << endl;
+
+		//cout << "Wartosc F dla BruteForceRecursive= " << Brute1.result << endl;
+
+
+		//Brute1 = Dynamic(n, data);
+
+		//auto timeDynamic1 = timeMeasure2(n, data, Dynamic);
+		//cout << "TIME Dynamic: " << timeDynamic1.count() << endl;
+	}
+	//cout << "Wartosc F dla dynamic= " << Brute1.result << endl;
 
 
 	return 0;

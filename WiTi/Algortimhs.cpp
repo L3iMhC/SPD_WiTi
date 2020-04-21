@@ -21,34 +21,25 @@ int CountCryterium(int n, vector <WiTicontainer> data)
 	return F;
 }
 
-vector<WiTicontainer> SortD(int n, vector <WiTicontainer> data)
+Brute SortD(int n, vector <WiTicontainer> data)
 {
-	vector<WiTicontainer> kopia = data;
+	Brute kopia(n);
+	kopia.opt = data;
 
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = i+1; j < n; j++)
 		{
-			if (kopia[i].d > kopia[j].d)
+			if (kopia.opt[i].d > kopia.opt[j].d)
 			{
-				WiTicontainer kopia2 = kopia[i];
-				kopia[i] = kopia[j];
-				kopia[j] = kopia2;
+				swap(kopia.opt[i], kopia.opt[j]);
 			}
 		}
 	}
+	kopia.result = CountCryterium(n, kopia.opt);
 	return kopia;
 }
-/*
-Brute::Brute(int n)
-{
-	opt; result = 100000;
-	dp = new int* [2 ^ n];
-	for (int i = 0; i < (2 ^ n); i++)
-		dp[i] = new int[n];
-	memset(dp, -1, sizeof dp);// set all subsets to -1
-}
-*/
+
 Brute BruteForce(int n, vector <WiTicontainer> data)
 {
 	Brute outcome;
@@ -75,19 +66,69 @@ Brute BruteForce(int n, vector <WiTicontainer> data)
 	return outcome;
 }
 
-int Dynamic(int n, vector <WiTicontainer> data)
+Brute BruteForce_recursive(int n, vector<WiTicontainer> data)
 {
-	Brute result;
-	int outcome;
+	Brute result(n);
+	vector<WiTicontainer> kopia = data;
+
+	result.permutations(kopia, 0);
+
+	return result;
+}
+
+/*
+void Brute::permutations(vector<WiTicontainer> data, int indeks)
+{
+	if (indeks == (data.size() - 1))
+	{
+		int x = CountCryterium(data.size(), data);
+		if (result > x)
+		{
+			result = x;
+			opt = data;
+		}
+		else
+			for (int i = indeks; i < (data.size()); i++)
+			{
+				swap(data[indeks], data[i]);
+				permutations(data, indeks + 1);
+				swap(data[indeks], data[i]);
+			}
+	}
+}*/
+
+void Brute::permutations(vector<WiTicontainer> data, int indeks)
+{
+	if (indeks < (data.size() - 1))
+		for (int i = indeks; i < (data.size()); i++)
+		{
+			swap(data[indeks], data[i]);
+			permutations(data, indeks + 1);
+			swap(data[indeks], data[i]);
+		}
+	else if (indeks == (data.size() - 1))
+	{
+		int x = CountCryterium(data.size(), data);
+		if (result > x)
+		{
+			result = x;
+			opt = data;
+		}
+	}
+}
+
+Brute Dynamic(int n, vector <WiTicontainer> data)
+{
+	Brute result(n);
+	//int outcome;
 	ALLMASK = (1 << n) - 1;//All bits are set to 1, for reference
 
 	//memset(result.dp, -1, sizeof result.dp);// set all subsets to -1
 
-	outcome = result.Calc(n, data, 0, 1);
+	result.result = result.Calc(n, data, 0, 0);
 
-	return outcome;
+	return result;
 }
-
 
 int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
 {
@@ -95,8 +136,8 @@ int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
 	int newlatency;
 
 	if (mask == ALLMASK)
-		return dp[mask] [operation];
-	
+		return dp[mask][operation];
+
 	if (dp[mask][operation] != -1) return dp[mask][operation];
 
 	for (int j = 0; j < n; j++)
@@ -117,75 +158,3 @@ int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
 
 	return dp[mask][operation] = F;
 }
-
-/*
-int solve(int n, int bitmask, int pos, int **dp, vector <WiTicontainer> data)
-{
-	// If we have solved this subproblem previously, return the result that was recorded
-	if (dp[bitmask][pos] != -1)
-		return dp[bitmask][pos];
-
-	// If the bitmask is all 1s, we need to return home    
-	//if (bitmask == (1 << n) - 1)
-	//	return latency[pos][0];
-
-	// Keep track of the minimum distance we have seen when visiting other cities
-	int minDistance = 2000000000;
-
-	// For each city we haven't visited, we are going to try the subproblem that arises from visiting it
-	for (int k = 0; k < n; k++)
-	{
-		int res = bitmask & (1 << k);
-
-		// If we haven't visited the city before, try and visit it
-		if (res == 0)
-		{
-			int newBitmask = bitmask | (1 << k);
-
-			// Get the distance from solving the subproblems
-			int newDist = latency[pos][k] + solve(n, newBitmask, k, dp, data);
-
-			// If newDist is smaller than the current minimum distance, we will override it here
-			minDistance = min(minDistance, newDist);
-		}
-	}
-
-	// Set the optimal value of the current subproblem
-	return dp[bitmask][pos] = minDistance;
-}
-
-Brute Dynamic1(int n, vector <WiTicontainer> data)
-{
-	Brute outcome;
-	int** dp = 0;
-	int** latency = 0;
-	dp = new int* [2^n-1];
-	latency = new int* [n];
-
-	for (int i = 0; i < (2 ^ n - 1); i++)
-	{
-		dp[i] = new int[n];
-	}
-
-
-	for (int z = 0; z < (2^n-1); z++)
-		for (int g = 0; g < n; g++)
-		{
-			if(g==0)
-				dp[z][g] = 0;
-			else
-			dp[z][g] = -1;
-		}
-	for (int j = 0; j < (n); j++)
-		latency[j] = new int[n];
-
-
-
-		outcome.result = solve(n, 0, 0, dp, latency);
-
-
-
-	delete[] dp,latency;
-	return outcome;
-}
-*/
