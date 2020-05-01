@@ -120,41 +120,132 @@ void Brute::permutations(vector<WiTicontainer> data, int indeks)
 Brute Dynamic(int n, vector <WiTicontainer> data)
 {
 	Brute result(n);
+	
+	int z = n + 1;
+	int o = pow(2,n);
+
+	int *dp = new int[o*z];
+	for (int y = 0; y < o*z; y++)
+			dp[y] = -1;
+			
 	//int outcome;
 	ALLMASK = (1 << n) - 1;//All bits are set to 1, for reference
 
-	//memset(result.dp, -1, sizeof result.dp);// set all subsets to -1
+	//memset(dp, -1, sizeof dp);// set all subsets to -1
 
-	result.result = result.Calc(n, data, 0, 0);
+
+	result.result = result.Calc(n, data, ALLMASK, 0, dp);
 
 	return result;
 }
 
-int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
+/*int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
 {
-	int F = 100000;//latency
+	int F = 1000000;//latency
 	int newlatency;
+	int newmask, sum, result=0;
 
 	if (mask == ALLMASK)
 		return dp[mask][operation];
-
 	if (dp[mask][operation] != -1) return dp[mask][operation];
 
 	for (int j = 0; j < n; j++)
 	{
-		int sum = 0;
-		if (!(mask & (1 << data[j].indeks)))//if it is not in mask
+		sum = 0;
+		newmask = mask;
+		if (!(newmask & (1 << data[j].indeks)))//if it is not in mask
 		{
 			for (int g = 0; g < n; g++)
 			{
-				if ((mask & (1 << data[g].indeks)))//rest of elements in mask
+				if ((newmask & (1 << data[g].indeks)))//rest of elements in mask
 					sum += data[g].p;
 			}
-			newlatency = max(-1 * data[j].d + sum + data[j].p, 0) * data[j].w + Calc(n, data, mask | (1 << data[j].indeks), operation + 1);
-			F = min(F, newlatency);
+			newlatency = max(-1 * data[j].d + sum + data[j].p, 0) * data[j].w + Calc(n, data, newmask |= (1 << data[j].indeks), operation + 1);
+			//F = min(F, newlatency);
+			if (newlatency < F)
+			{
+				F = newlatency;
+				mask = newmask;
+			}
 		}
 
 	}
 
 	return dp[mask][operation] = F;
+}*/
+/*
+int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation)
+{
+	int F = 1000000;//latency
+	int newlatency;
+	int newmask, sum; //result = 0;
+	int o = 2 ^ n;
+
+	if (mask == 0)
+		return 0;//dp[mask][operation];
+	if (dp[mask][operation] != -1)
+		return dp[mask][operation];
+
+	for (int j = 0; j < n; j++)
+	{
+		sum = 0;
+		newmask = mask;
+		if ((newmask & (1 << data[j].indeks)))//if is in mask
+		{
+			for (int g = 0; g < n; g++)
+			{
+				if ((newmask & (1 << data[g].indeks)))// elements in mask
+					sum += data[g].p;
+			}
+			newmask ^= (1 << data[j].indeks);
+			newlatency = max(-1 * data[j].d + sum, 0) * data[j].w + Calc(n, data, newmask, operation + 1);
+			//F = min(F, newlatency);
+			if (newlatency < F)
+			{
+				F = newlatency;
+
+			}
+		}
+
+	}
+
+	return dp[mask][operation] = F;
+}
+*/
+int Brute::Calc(int n, vector <WiTicontainer> data, int mask, int operation, int *dp)
+{
+	int F = 1000000;//latency
+	int newlatency;
+	int newmask, sum; //result = 0;
+	int o = n+1;
+
+	if (mask == 0)
+		return 0;//dp[mask][operation];
+	if (dp[mask*o+operation] != -1)
+		return dp[mask * o + operation];
+
+	for (int j = 0; j < n; j++)
+	{
+		sum = 0;
+		newmask = mask;
+		if ((newmask & (1 << data[j].indeks)))//if is in mask
+		{
+			for (int g = 0; g < n; g++)
+			{
+				if ((newmask & (1 << data[g].indeks)))// elements in mask
+					sum += data[g].p;
+			}
+			newmask ^= (1 << data[j].indeks);
+			newlatency = max(-1 * data[j].d + sum, 0) * data[j].w + Calc(n, data, newmask , operation + 1, dp);
+			//F = min(F, newlatency);
+			if (newlatency < F)
+			{
+				F = newlatency;
+
+			}
+		}
+
+	}
+
+	return dp[mask * o + operation] = F;
 }

@@ -6,13 +6,16 @@ struct Brute
 {
     vector<WiTicontainer> opt;
     int result;
-    int dp[4000][20];
-
-    Brute() { opt; result = 10000000; memset(dp, -1, sizeof dp);/* set all subsets to -1*/ }
+   // int dp[6000][15];
+/*
+    Brute() { opt; result = 10000000; memset(dp, -1, sizeof dp);/* set all subsets to -1 }
     Brute(int n) { opt.resize(n); result = 10000000; memset(dp, -1, sizeof dp); }
-
-    int Calc(int n, vector <WiTicontainer> data, int mask, int operations);
-
+    */
+    Brute() { opt; result = 10000000; }; //memset(dp, -1, sizeof dp); set all subsets to -1 }
+    Brute(int n) { opt.resize(n); result = 10000000; }; //memset(dp, -1, sizeof dp); }
+    
+  //  int Calc(int n, vector <WiTicontainer> data, int mask, int operations, int *dp);
+    int Calc(int n, vector <WiTicontainer> data, int mask, int operations, int *dp);
     void permutations(vector <WiTicontainer> data, int indeks);
 
    // ~Brute(){delete[] dp;}
